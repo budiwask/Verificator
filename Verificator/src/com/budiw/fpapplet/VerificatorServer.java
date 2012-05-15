@@ -1,9 +1,7 @@
 package com.budiw.fpapplet;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import com.digitalpersona.onetouch.DPFPFeatureSet;
 import com.digitalpersona.onetouch.DPFPGlobal;
@@ -17,15 +15,14 @@ public class VerificatorServer {
 	private static DPFPFeatureSet uploadedFeatureSet;
 	private static DPFPTemplate storedTemplate;
 	
-	public static void main(String args[]) throws IOException {
+	public static void main(String args[]) {
 		if(args.length < 2) {
 			System.err.println("ARGS:\n [0]: templateName\n [1]: featureName\n");
 		}
 		
-		System.out.println(new File(".").getAbsolutePath());
-		
 		FileInputStream stream = null;
 		try {
+			System.out.println("args: " + args[0] + " " + args[1] + " \n");
 			//Read template file
 			stream = new FileInputStream(args[0]);
 			byte[] data = new byte[stream.available()];
@@ -33,7 +30,6 @@ public class VerificatorServer {
 			stream.close();
 			storedTemplate = DPFPGlobal.getTemplateFactory().createTemplate();
 			storedTemplate.deserialize(data);
-
 			//Read feature set file
 			stream = new FileInputStream(args[1]);
 			data = new byte[stream.available()];
@@ -50,13 +46,10 @@ public class VerificatorServer {
 
 		} catch(FileNotFoundException e) {
 			System.out.println("File not found");
+//			e.printStackTrace();
 		} catch (Exception e) {
-			System.out.println("Error: " + e.getMessage());;
-			e.printStackTrace();
-		} finally {
-			if(stream!=null) {
-				stream.close();
-			}
-		}
+			System.out.println("Error: " + e.getMessage());
+//			e.printStackTrace();
+		} 
 	}
 }
